@@ -55,7 +55,7 @@ public class View {
      * activity：activity的attach()方法中会实例化一个PhoneWindow，mWindow = new PhoneWindow()，activity
      * 中持有Window的引用。
      * PhoneWindow：PhoneWindow中会实例化一个DecorView，PhoneWindow持有DecorView的引用。
-     * DecorView：DecorView将我们setContentView()中的布局添加到自己的布局中。
+     * DecorView：DecorView将我们setContentView()中的布局添加到自己的布局中，它是顶级视图。
      * DecorView的显示：ActivityThread的handleResumeActivity()方法中先调用了activity的onResume方法，然后
      * 调用activity的makeVisible()方法，此时才能看到界面。
      * ViewRootImpl：上述的makeVisible()方法中会创建一个ViewManager，ViewManager wm = getWindowManager()，
@@ -67,8 +67,48 @@ public class View {
      *         }
      *         mDecor.setVisibility(View.VISIBLE);
      *     }
-     * 然后调用wm的addView()方法，getWindowManager()得到的是WindowManager，WindowManager实现了接口
-     * ViewManager，WindowManager实现类为WindowManagerImpl，
+     * getWindowManager()方法如下：
+     *     public WindowManager getWindowManager() {
+     *         return mWindowManager;
+     *     }
+     * WindowManager实现类为WindowManagerImpl，然后调用wm的addView()方法：
+     *     public final class WindowManagerImpl implements WindowManager {
+     *          private final WindowManagerGlobal mGlobal = WindowManagerGlobal.getInstance();
+     *          ...
+     *          @Override
+     *          public void addView(View view, ViewGroup.LayoutParams params) {
+     *              mGlobal.addView(view, params, mDisplay, mParentWindow);
+     *          }
+     *      }
+     * 接着调用WindowManagerGlobal的addView()方法：
+     *     public void addView(View view, ViewGroup.LayoutParams params,
+     *             Display display, Window parentWindow) {
+     *
+     *               final WindowManager.LayoutParams wparams = (WindowManager.LayoutParams)params;
+     *              ......
+     *                  synchronized (mLock) {
+     *
+     *                  ViewRootImpl root;
+     *                   //实例化一个ViewRootImpl对象
+     *                  root = new ViewRootImpl(view.getContext(), display);
+     *                  view.setLayoutParams(wparams);
+     *
+     *                 mViews.add(view);
+     *                 mRoots.add(root);
+     *                 mParams.add(wparams);
+     *             }
+     *              ......
+     *
+     *              try {
+     *                 //将DecorView交给ViewRootImpl
+     *                 root.setView(view, wparams, panelParentView);
+     *             }catch (RuntimeException e) {
+     *             }
+     *
+     *             }
+     *  }
+     * 里面实例化了ViewRootImpl，最终调用了ViewRootImpl的setView方法，接着在setView中调用ViewRootImpl的
+     * performTraversals()方法开始绘制view。
      *
      */
 
