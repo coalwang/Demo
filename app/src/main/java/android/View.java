@@ -40,6 +40,41 @@ public class View {
     //view滑动的几种方式
     /**
      * 第一种：调用view自身的layout()方法，重新布局当前view的位置
+     *
+     * 第二种：调用view的下述方法：
+     * offsetTopAndBottom(int offset)：值为正，向下移动，值为负，向上移动。
+     * offsetLeftAndRight(int offset): 值为正，像右移动，值为负，向左移动。
+     *
+     * 第三种：LayoutParams，
+     * LayoutParams 保存了一个 View 的布局参数，所以通过改变 LayoutParams 来动态修改一个布局的位置参数，从而达
+     * 到改变 View 位置的效果。
+     * LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams)getLayoutParams();
+     * layoutParams.leftMargin = getLeft() + offsetX;
+     * layoutParams.topMargin = getTop() + offsetY;
+     * setLayoutParams(layoutParams);
+     * 所以，其实我们改变的是这个 View 的 Margin 属性。
+     * LinearLayout.LayoutParams继承自ViewGroup.MarginLayoutParams。
+     *
+     * 第四种：调用view的scrollTo 和 scrollBy：
+     * scrollTo(x, y) 移动到一个具体的坐标点。
+     * scrollBy(dx, dy) 移动的增量为 dx, dy。
+     * scrollTo 和 scrollBy 移动的是 View 的内容。即：对 TextView 使用的话，则是移动它的文本；对 ViewGroup
+     * 使用的话，则移动的是所有的子 View。所以，一般不对 View 使用这两个方法，而是对 ViewGroup 使用。
+     *
+     * 第五种：调用view的setTranslationX(float translationX)，setTranslationY(float translationY)：
+     *    public void setTranslationX(float translationX) {
+     *         if (translationX != getTranslationX()) {
+     *             invalidateViewProperty(true, false);
+     *             mRenderNode.setTranslationX(translationX);
+     *             invalidateViewProperty(false, true);
+     *
+     *             invalidateParentIfNeededAndWasQuickRejected();
+     *             notifySubtreeAccessibilityStateChangedIfNeeded();
+     *         }
+     *     }
+     * 第一次调用setTranslationX(float translationX)会平移距离，如果后续传入的translationX与第一次相同，则不
+     * 会再平移，每次传入的translationX需要不同，另外每次平移的起点为上一次平移后的位置，每次平移的距离为本地的
+     * translationX值与上一次translationX的值得差。
      */
 
     //view的事件分发机制
