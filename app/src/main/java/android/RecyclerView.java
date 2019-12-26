@@ -33,18 +33,18 @@ public class RecyclerView {
     /**
      * public final class Recycler {
      *      final ArrayList<ViewHolder> mAttachedScrap = new ArrayList<>();
+     *
      *      private ArrayList<ViewHolder> mChangedScrap = null;
      *
      *      final ArrayList<ViewHolder> mCachedViews = new ArrayList<ViewHolder>();
-     *
-     *      private final List<ViewHolder> mUnmodifiableAttachedScrap = Collections.unmodifiableList(mAttachedScrap);
      *
      *      private RecycledViewPool mRecyclerPool;
      *
      *      private ViewCacheExtension mViewCacheExtension;
      * }
      * 第一级缓存：mAttachedScrap，mChangedScrap，mCachedViews
-     * 第二级缓存：mViewCacheExtension，为null，需要调用RecyclerView的setViewCacheExtension()方法设置，由开发者自己维护。
+     * 第二级缓存：mViewCacheExtension，为null，需要调用RecyclerView的setViewCacheExtension()方法设置，这
+     * 一级缓存是留给开发者自由发挥的，官方并没有默认实现，它本身是null。
      * 第三级缓存：mRecyclerPool，三级缓存是根据ViewHolder的viewType进行存取的。
      * 什么时候取：从mAttachedScrap，mChangedScrap，mCachedViews，mViewCacheExtension中都没有取到ViewHolder
      * 时，从RecyclerViewPool中取。
@@ -96,6 +96,9 @@ public class RecyclerView {
      *             scrap.resetInternal();
      *             scrapHeap.add(scrap);
      *         }
+     *
+     * 如果缓存三级缓存中都没有数据，怎么办？
+     * 由 onCreateViewHolder() 创建一个viewHolder，进行使用。
      *
      */
 }

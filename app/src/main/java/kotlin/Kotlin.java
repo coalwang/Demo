@@ -18,4 +18,62 @@ public class Kotlin {
      * 通知编译器不做非空校验。如果运行时发现变量为空，就扔出异常
      * val l = b!!.length
      */
+
+    //如何创建一个可以为null的String类型的变量
+    /**
+     * var name: String?
+     */
+
+
+     //高阶函数定义
+    /**
+     * 如果一个函数的参数为函数或者一个函数的返回值为函数，则该函数为高阶函数。
+     */
+
+    //Any
+    /**
+     * 相当于java中的Object，Map<String, Any> map = new HashMap()<>，表明键元素可以为任何类型。
+     */
+
+    //object的作用
+    /**
+     * 1. 实现单例：修饰一个类实现一个类的单例
+     *     object Manager{
+     *         fun add(){
+     *         }
+     *     }
+     *
+     * 2. companion object 可以在其内部定义类的静态变量和静态方法
+     *     class A {
+     *         companion object {
+     *         const val = "xx"
+     *             fun add() {
+     *             }
+     *         }
+     *
+     * 3. 实现匿名类的实例化
+     *     java匿名类实例化
+     * button.setOnClickListener (new OnClickListener) {
+     *     }
+     *     kotlin匿名类实例化
+     * button.setOnClickListener (object : OnClickListener) {
+     *     }
+     *
+     */
+
+    //如何给一个类创建静态变量
+    /**
+     * 使用companion object
+     */
+
+    //判断某一个对象是否为某一个类的示例
+    /**
+     * 使用is或者!is，kotlin中判断为一个对象为某一个类的实例后，使用时可以智能转换成该类型，不需要像java中那么进
+     * 行强制转换：
+     *     if (o is String) {
+     *         0.length()
+     *     }
+     *
+     */
+
 }

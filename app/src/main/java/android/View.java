@@ -75,6 +75,10 @@ public class View {
      * 第一次调用setTranslationX(float translationX)会平移距离，如果后续传入的translationX与第一次相同，则不
      * 会再平移，每次传入的translationX需要不同，另外每次平移的起点为上一次平移后的位置，每次平移的距离为本地的
      * translationX值与上一次translationX的值得差。
+     *
+     * 第六种：动画
+     *
+     * 第七种：Scroller
      */
 
     //view的事件分发机制
@@ -145,6 +149,25 @@ public class View {
      * 里面实例化了ViewRootImpl，最终调用了ViewRootImpl的setView方法，接着在setView中调用ViewRootImpl的
      * performTraversals()方法开始绘制view。
      *
+     */
+
+    //View.post(Runnable runnable)方法原理
+    /**
+     * 执行过程是怎么样的？
+     * 1. 首先判断View中一个属性mAttachInfo是否为null，注：mAttachInfo中含有一个mHandler，子view的mAttachInfo
+     * 和ViewGroup的mAttachInfo是同一个，ViewGroup的mAttachInfo是从ViewRootImpl传过来的，mAttachInfo实例化
+     * 发生ViewRootImpl中，mHandler实例化也发生在ViewRootImpl，final ViewRootHandler mHandler = new ViewRootHandler()，
+     * 这种方式实例化handler，则handler默认绑定主线程的Looper。
+     * 2. mAttachInfo不为null，拿到mHandler直接将消息发送到主线程。
+     * 3. mAttachInfo为null，Runnable被存到HandlerActionQueue中，接下来会走到ViewRootImpl的performTraversals()方法，
+     * 它中会调用view的dispatchAttachToWindow()，然后dispatchAttachToWindow()方法中会执行从HandlerActionQueue
+     * 中取出Runnable并交给mHandler，发送到主线程的Looper处理。
+     *
+     * ViewRootImpl的performTraversals()方法中以此执行了dispatchAttachToWindow()、performMeasure、performLayout、
+     * performDraw，在dispatchAttachToWindow()方法之后进行了view的测量、布局、绘制，那么View.post(runnable)
+     * 如何保证runnable操作一定可以拿到view的宽高？
+     * android是基于消息机制的，ViewRootImpl的performTraversals()方法是在TraversalRunnable这个消息中执行的，
+     * 这个消息执行完后，才会执行view.post()中的Runnable。
      */
 
 }
