@@ -1,6 +1,59 @@
-package kotlin;
+//package kotlin
 
-public class Kotlin {
+class kotlin {
+
+    //定义一个没有返回类型的函数，Unit可以省略
+    fun sum(a: Int): Unit {
+        print("test")
+    }
+
+    //顶层变量，kotlin可以在类的外部定义变量
+
+    //空值与 null 检测：当某个变量的值可以为 null 的时候，必须在声明处的类型后添加 ? 来标识该引用可为空
+    //变量可为null，返回值可为null
+    fun sum(a: Int?, b: Int?): Int? {
+        return null
+    }
+
+    //类型检测与自动类型转换
+    /**
+     * is 运算符检测一个表达式是否某类型的一个实例。 如果一个不可变的局部变量或属性已经判断出为某类型，那么检测后的
+     * 分支中可以直接当作该类型使用，无需显式转换：
+     * if (str is String) {
+     *      int t = s.length
+     * }
+     */
+
+    //流程控制when
+    /**
+     * when (x) {
+        1 -> print("x == 1")
+        2 -> print("x == 2")
+        else -> { // 注意这个块
+            print("x is neither 1 nor 2")
+        }
+       }
+     * when将它的参数与所有的分支条件顺序比较，直到某个分支满足条件，如果其他分支都不满足条件将会求值 else 分支，
+     * 也可以不要else分支。
+     * 如果很多分支需要用相同的方式处理，则可以把多个分支条件放在一起，用逗号分隔：
+     * when (x) {
+        0, 1 -> print("x == 0 or x == 1")
+        else -> print("otherwise")
+       }
+     */
+
+    //流程控制For循环，关键字in
+    /**
+     1. for 循环可以对任何提供迭代器（iterator）的对象进行遍历：
+     for(object in Object) {
+        //操作object
+     }
+
+     2. 如果想通过索引遍历一个数组或者list
+     for(i in myList.indices) {
+        //操作i，i为索引
+     }
+     */
 
     //问号?
     /**
@@ -25,7 +78,7 @@ public class Kotlin {
      */
 
 
-     //高阶函数定义
+    //高阶函数定义
     /**
      * 如果一个函数的参数为函数或者一个函数的返回值为函数，则该函数为高阶函数。
      */
@@ -66,14 +119,5 @@ public class Kotlin {
      * 使用companion object
      */
 
-    //判断某一个对象是否为某一个类的示例
-    /**
-     * 使用is或者!is，kotlin中判断为一个对象为某一个类的实例后，使用时可以智能转换成该类型，不需要像java中那么进
-     * 行强制转换：
-     *     if (o is String) {
-     *         0.length()
-     *     }
-     *
-     */
 
 }

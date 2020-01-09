@@ -34,7 +34,7 @@ public class Logcat {
      * adb start-server：开启adb服务
      * adb kill-server：关闭adb服务
      * adb logcat -d ：打印出手机log到控制台，不一直打印
-     * adb logcat | grep MyApp：打印带有MyApp字段的log
+     * adb logcat | grep MyApp：打印带有MyApp字段的log，不需要加字符串符号""
      * adb logcat | grep -i myapp：打印带有MyApp字段的log，忽略大小写
      */
 
@@ -63,11 +63,15 @@ public class Logcat {
 
     //根据不同条件筛选日志，可以根据PID、TID、日志级别、日志标签、日志内容等条件筛选日志
     /**
-     * 根据日志级别筛选：adb logcat *:W  W表示日志的级别
-     * 根据日志标签筛选：adb logcat System:* *:s  第一个星号表示不匹配日志级别， *:S用于设置所有标记的日志优先
-     * 级为S，System表示日志标签。
+     * 根据日志级别筛选：adb logcat *:E  E表示日志的级别，打印Error级别以上的log。
      * 根据PID（应用包名）筛选：由于应用每次启动后，系统分配的PID都不一样，因此，需要根据包名或UID筛选日志时，需要
      * 先启动应用，再使用命令adb shell dumpsys meminfo 包名 查看到UID信息，最后根据PID筛选日志，adb logcat | grep 18270 18270表示PID
+     */
+
+    //将电脑上某个文件导入到手机
+    /**
+     * adb push test.flv /sdcard/test/good.flv
+     * 将当前目录下的test.flv文件导入到手机sdcard的test目录下，并修改名称为good.flv。
      */
 
 }
