@@ -170,4 +170,52 @@ public class View {
      * 这个消息执行完后，才会执行view.post()中的Runnable。
      */
 
+    //ViewDragHelper
+    /**
+     在自定义ViewGroup中完成拖拽功能时使用。
+
+     shouldInterceptTouchEvent(MotionEvent ev)：
+     ViewDragHelper中的方法，用来处理事件分发，需要在ViewGroup的onInterceptTouchEvent()方法中调用。
+
+     processTouchEvent(MotionEvent event)：
+     ViewDragHelper中的方法。用来处理事件，需要在ViewGroup的onTouchEvent()方法中调用，注意ViewGroup中的
+     onTouchEvent()方法一定要返回true。
+
+     实例化方式：
+     public static ViewDragHelper create(ViewGroup forParent, Callback cb) {
+        return new ViewDragHelper(forParent.getContext(), forParent, cb);
+     }
+     在拖拽过程中会回调接口Callback中的一些方法。
+
+     public abstract static class Callback {
+        //这个方法需要返回true，后续其他方法才能被调用
+        //第一个参数：被捕获的view
+        //第二个参数：
+        public abstract boolean tryCaptureView(View child, int pointerId)；
+
+        //被拖拽的view的状态发生改变时回调的方法
+        //三种状态：ViewDragHelper.STATE_IDLE 闲置状态，ViewDragHelper.STATE_DRAGGING 正在拖动，
+        //ViewDragHelper.STATE_SETTLING 放置到某个位置
+        public void onViewDragStateChanged(int state) {}
+
+        //拖动的view的位置发生变换时调用
+        //第一个参数：拖动的view
+        //第二个参数：距离左边的距离
+        //第三个参数：距离顶部的距离
+        //第四个参数：x轴变化量
+        //第五个参数：y轴变化量
+        public void onViewPositionChanged(View changedView, int left, int top, int dx, int dy) {}
+
+        //捕获view时调用的方法
+        //第一个参数：被获取的view
+        public void onViewCaptured(View capturedChild, int activePointerId) {}
+
+        //view停止拖拽时调用的方法
+        //第一个参数：view
+        //第二个参数：x轴的拖动速率
+        public void onViewReleased(View releasedChild, float xvel, float yvel) {}
+
+     }
+     */
+
 }

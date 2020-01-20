@@ -10,13 +10,29 @@ public class Internet {
 
     //为什么要使用URLEncoder.encode()，URLDecoder.decode()
     /**
-     * 如果一个url = "xxxxx?param=" + "za4T8MHB/6mhmYgXB7IntyyOUL7Cl++0jv5rFxAIFVji8GDrcf+k8g==",这里
-     * 键元素含有特殊字符：/ + = 等等，如果不编码，那么在服务端获得 param 会变成类似于下面的值：
-     * "za4T8MHB/6mhmYgXB7IntyyOUL7Cl  0jv5rFxAIFVji8GDrcf k8g=="，我们看到 三个 + 号消失了，变成了空格，
-     * 原因就是：如果url参数值含有特殊字符时，需要使用 url 编码。
-     * 编码：URLEncoder.encode("xxx", "utf-8")
-     * 解码：URLDecoder.decode(param, "utf-8")
-     * 对url中的哪部分进行编码：一般只对url中的键元素和值元素进行编码
+     针对“name1=value1&name2=value2”我们来说一下客户端到服务端的概念上解析过程:
+     上述字符串在计算机中用ASCII吗表示为：
+     6E616D6531 3D 76616C756531 26 6E616D6532 3D 76616C756532。
+     6E616D6531：name1
+     3D：=
+     76616C756531：value1
+     26：&
+     6E616D6532：name2
+     3D：=
+     76616C756532：value2
+     服务端在接收到该数据后就可以遍历该字节流，首先一个字节一个字节的吃，当吃到3D这字节后，服务端就知道前面吃得字节
+     表示一个key，再想后吃，如果遇到26，说明从刚才吃的3D到26子节之间的是上一个key的value，以此类推就可以解析出客
+     户端传过来的参数。
+     现在有这样一个问题，如果我的参数值中就包含=或&这种特殊字符的时候该怎么办。
+     比如说“name1=value1”,其中value1的值是“va&lu=e1”字符串，那么实际在传输过程中就会变成这样“name1=va&lu=e1”。
+     我们的本意是就只有一个键值对，但是服务端会解析成两个键值对，这样就产生了奇异。
+     如何解决上述问题带来的歧义呢？解决的办法就是对参数进行URL编码
+     URL编码只是简单的在特殊字符的各个字节前加上%，例如，我们对上述会产生奇异的字符进行URL编码后结果：
+     “name1=va%26lu%3D”，这样服务端会把紧跟在“%”后的字节当成普通的字节，就是不会把它当成各个参数或键值对的分隔符。
+     原因就是：如果url参数值含有特殊字符时，需要使用 url 编码。
+     编码：URLEncoder.encode("xxx", "utf-8")
+     解码：URLDecoder.decode(param, "utf-8")
+     对url中的哪部分进行编码：一般只对url中的键元素和值元素进行编码
      */
 
     //一个Uri的组成部分是什么

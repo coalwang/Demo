@@ -5,12 +5,14 @@ import android.os.Bundle
 import android.util.Log
 import com.squareup.leakcanary.LeakCanary
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : MyInterface {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        val lists = mutableListOf(String)
+    lateinit var x: String
+
+    override fun abstractMethod() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
+
+    constructor(s: String) {}
 
 }
